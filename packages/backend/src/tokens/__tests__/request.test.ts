@@ -370,14 +370,15 @@ describe('tokens.getOrganizationSyncTarget(url,options)', _ => {
       },
     },
     {
-      name: 'personal account match precedes org match',
+      name: 'org match match precedes personal account',
       whenOrgSyncOptions: {
-        organizationPatterns: ['/personal-account'], // bad practice
-        personalAccountPatterns: ['/personal-account'],
+        personalAccountPatterns: ['/', '/(.*)'], // Personal account captures everything
+        organizationPatterns: ['/orgs/:slug'], // that isn't org scoped
       },
-      whenAppRequestPath: '/personal-account',
+      whenAppRequestPath: '/orgs/my-org',
       thenExpectActivationEntity: {
-        type: 'personalAccount',
+        type: 'organization',
+        organizationSlug: 'my-org',
       },
     },
     {
