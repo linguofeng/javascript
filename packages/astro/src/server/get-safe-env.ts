@@ -1,7 +1,7 @@
 import { isTruthy } from '@clerk/shared/underscore';
 import type { APIContext } from 'astro';
 
-type ContextOrLocals = APIContext | APIContext['locals'];
+export type ContextOrLocals = APIContext | APIContext['locals'];
 
 /**
  * @internal
