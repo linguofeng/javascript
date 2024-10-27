@@ -2,9 +2,9 @@ import type { ClerkClient, ClerkOptions } from '@clerk/backend';
 import { createClerkClient } from '@clerk/backend';
 import type { APIContext } from 'astro';
 
-import { getSafeEnv } from './get-safe-env';
+import { type ContextOrLocals, getSafeEnv } from './get-safe-env';
 
-type CreateClerkClientWithOptions = (context: APIContext, options?: ClerkOptions) => ClerkClient;
+type CreateClerkClientWithOptions = (context: ContextOrLocals, options?: ClerkOptions) => ClerkClient;
 const createClerkClientWithOptions: CreateClerkClientWithOptions = (context, options) =>
   createClerkClient({
     secretKey: getSafeEnv(context).sk,
@@ -28,6 +28,6 @@ const createClerkClientWithOptions: CreateClerkClientWithOptions = (context, opt
     ...options,
   });
 
-const clerkClient = (context: APIContext) => createClerkClientWithOptions(context);
+const clerkClient = (context: ContextOrLocals) => createClerkClientWithOptions(context);
 
 export { clerkClient };
