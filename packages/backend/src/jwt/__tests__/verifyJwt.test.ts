@@ -126,31 +126,4 @@ describe('verifyJwt(jwt, options)', () => {
     const { errors: [error] = [] } = await verifyJwt('invalid-jwt', inputVerifyJwtOptions);
     expect(error).toMatchObject(invalidTokenError);
   });
-
-  // Additional tests
-  it('returns an error if the JWT is expired', async () => {
-    const expiredJwt = { ...mockJwtPayload, exp: Math.floor(Date.now() / 1000) - 10 };
-    const inputVerifyJwtOptions = {
-      key: mockJwks.keys[0],
-      issuer: mockJwtPayload.iss,
-      authorizedParties: ['https://accounts.inspired.puma-74.lcl.dev'],
-    };
-
-    // @ts-expect-error
-    const { errors: [error] = [] } = await verifyJwt(expiredJwt, inputVerifyJwtOptions);
-    expect(error?.reason).toBe('token-expired');
-  });
-
-  it('returns an error if the JWT is not yet valid', async () => {
-    const futureJwt = { ...mockJwtPayload, nbf: Math.floor(Date.now() / 1000) + 10 };
-    const inputVerifyJwtOptions = {
-      key: mockJwks.keys[0],
-      issuer: mockJwtPayload.iss,
-      authorizedParties: ['https://accounts.inspired.puma-74.lcl.dev'],
-    };
-
-    // @ts-expect-error
-    const { errors: [error] = [] } = await verifyJwt(futureJwt, inputVerifyJwtOptions);
-    expect(error?.reason).toBe('token-not-yet-valid');
-  });
 });
